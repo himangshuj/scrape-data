@@ -1,0 +1,28 @@
+{
+  "name": "scrape-data",
+  "version": "0.0.1",
+  "description": "utility scripts to distill businessideas",
+  "main": "crunchbase.js",
+  "dependencies": {
+    "underscore": "~1.6.0",
+    "json2csv": "~2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node crunchbase.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/himangshuj/scrape-data.git"
+  },
+  "keywords": [
+    "scraping",
+    "crunchbase",
+    "api"
+  ],
+  "author": "himangshu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/himangshuj/scrape-data/issues"
+  }
+}
