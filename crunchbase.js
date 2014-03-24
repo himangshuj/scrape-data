@@ -47,7 +47,7 @@ var getDetails = function(permalinks){
 			if(_.size(remaining)>0){
 				getDetails(remaining);
 			}else{
-				json2csv({data: companyData, fields: ['name','homepage_url','founded_year','deadpooled_year','overview','competitions','total_money_raised']}, function(err, csv) {
+				json2csv({data: companyData, fields: ['name','homepage_url','founded_year','deadpooled_year','overview','total_money_raised']}, function(err, csv) {
   				if (err) console.log(err);
   					fs.writeFile('data/'+query+".csv", csv, function(err) {
     				if (err) throw err;
