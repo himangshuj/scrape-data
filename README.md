@@ -16,10 +16,10 @@ cd scrape-data
 mkdir data
 
 
-export query=<query term you would type on crunchbase>
+export query=&lt;query term you would type on crunchbase&gt;
 
 
-export crunchbasekey=<your api key>
+export crunchbasekey=&lt;your api key&gt;
 
 
 npm install
