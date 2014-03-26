@@ -7,13 +7,17 @@ var _ = require('underscore');
 var permalinks = [];
 var json2csv = require('json2csv');
 var async = require('async');
+var currentPage = 0;
 var getpermalinks = function(page) {
     http.get("http://api.crunchbase.com/v/1/search.js?query=" + query + "&api_key=" + key + "&page=" + page, function(res) {
         var data = "";
+	currentPage = page;
+	console.log("http://api.crunchbase.com/v/1/search.js?query=" + query + "&api_key=" + key + "&page=" + page);
         res.on('data', function(chunk) {
             data += chunk;
         });
         res.on('end', function() {
+	try{				
             var parsed_data = JSON.parse(data);
             var total_pages = parsed_data.total / 10;
             var page = parsed_data.page;
@@ -44,6 +48,10 @@ var getpermalinks = function(page) {
                     });
                 });
             }
+	} catch ( e){
+		console.log("skipping " + currentPage);
+		getpermalinks(currentPage + 1);
+		}
         });
     });
 };
@@ -51,17 +59,26 @@ var companyData = [];
 var getSingleDetail = function(permalink, callback) {
     var data = "";
     console.log("http://api.crunchbase.com/v/1/company/" + permalink + ".js?api_key=" + key);
-    http.get("http://api.crunchbase.com/v/1/company/" + permalink + ".js?api_key=" + key, function(res) {
+	try{
+    	http.get("http://api.crunchbase.com/v/1/company/" + permalink + ".js?api_key=" + key, function(res) {
         console.log("fetching company data");
         //FIXME: add error handler. Requeue errored task
         res.on('data', function(chunk) {
             data += chunk;
         });
         res.on('end', function() {
-            var parsedData = JSON.parse(data);
-            callback(null, parsedData);
-        });
-    });
+           var parsedData = {};
+		try{
+		       	parsedData = JSON.parse(data);
+		}catch(err){
+			console.log("ignoring"+permalink);
+		}
+            	callback(null, parsedData);
+        	});
+    	});
+	}catch(err){
+		callback(null,{});
+	}
 }
 
 getpermalinks(1);
