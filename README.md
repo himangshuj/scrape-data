@@ -27,3 +27,9 @@ npm install
 
 node crunchbase.js
 
+alexa scraping
+======
+
+This will create a file called alexa.csv in the data folder
+node alexa.js &lt; {file containing list of urls , one url in a line}
+

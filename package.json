@@ -6,7 +6,8 @@
   "dependencies": {
     "underscore": "~1.6.0",
     "json2csv": "~2.2.1",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "xml2js": "~0.4.1"
   },
   "devDependencies": {},
   "scripts": {

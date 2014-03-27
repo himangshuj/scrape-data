@@ -9,7 +9,10 @@ var json2csv = require('json2csv');
 var async = require('async');
 var currentPage = 0;
 var getpermalinks = function(page) {
-    http.get("http://api.crunchbase.com/v/1/search.js?query=" + query + "&api_key=" + key + "&page=" + page, function(res) {
+            currentPage = page;
+
+	try{
+	http.get("http://api.crunchbase.com/v/1/search.js?query=" + query + "&api_key=" + key + "&page=" + page, function(res) {
         var data = "";
 	currentPage = page;
 	console.log("http://api.crunchbase.com/v/1/search.js?query=" + query + "&api_key=" + key + "&page=" + page);
@@ -35,7 +38,7 @@ var getpermalinks = function(page) {
                         getSingleDetail(permalink, callback);
                     });
                 });
-                async.parallel(parallelTasks, function(err, companyData) {
+                async.parallelLimit(parallelTasks,100, function(err, companyData) {
                     json2csv({
                         data: companyData,
                         fields: ['name', 'homepage_url', 'founded_year', 'deadpooled_year', 'overview', 'total_money_raised']
@@ -54,6 +57,11 @@ var getpermalinks = function(page) {
 		}
         });
     });
+	}catch(e){
+		console.log("skipping"+currentPage);
+		getpermalinks(currentPage + 1);
+
+	}
 };
 var companyData = [];
 var getSingleDetail = function(permalink, callback) {
@@ -75,7 +83,9 @@ var getSingleDetail = function(permalink, callback) {
 		}
             	callback(null, parsedData);
         	});
-    	});
+    	}).on('error',function(){
+		callback(null,{});
+	});
 	}catch(err){
 		callback(null,{});
 	}
